@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Skydiver App</title>
+
+    {% load static %}
+
+        <link rel='stylesheet' href={% static 'style.css' %}>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />    
+        <link rel="stylesheet" href={% static 'leaflet/leaflet.css' %} />
+        <script src={% static 'leaflet/leaflet.js' %}></script>
+
+
+
+  </head>
+  <body>
+    <p class="text-gray-900 text-6xl dark:text-white">Directions</p>
+    <br>
+    <div id="map">
+    </div>
+    <br>
+    <div class=''>
+    <div id="landing_pos" class="float-left">
+      
+      <div class="float-left mx-3 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <a href="#">
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Landing Site</h5>
+        </a>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Latitude: <span class="font-bold">{{ land_latt }}</span> </p>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Longitude: <span class="font-bold">{{ land_long }}</span> </p>
+        <a href="{% url 'index' %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Change
+            <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+        </a>
+      </div>
+    </div>
+
+    <br>
+    <div id="drop_position" class="float-right">
+      
+      <div class="float-right mx-3 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <a href="#">
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Dropping Position</h5>
+        </a>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Latitude: <span class="font-bold">{{ drop_latt }}</span> </p>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Longitude: <span class="font-bold">{{ drop_long }}</span> </p>
+        <a href="{% url 'landing' %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Change
+            <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <br>
+
+    <button onclick="location.href = '{% url 'reset_path' %}'" type="button" class="mx-3 text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Reset</button>
+
+    <br>
+
+    <svg id="inner-arrow" width="300" height="300" viewBox="0 0 100 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M97.64 36.1L64.72 3.18001C63.9792 2.40049 63.0898 1.77711 62.1043 1.34659C61.1189 0.916062 60.0572 0.687101 58.9819 0.67319C57.9066 0.659279 56.8393 0.8607 55.8431 1.26559C54.8468 1.67047 53.9416 2.27064 53.1808 3.03074C52.4201 3.79083 51.8191 4.69548 51.4134 5.6914C51.0076 6.68732 50.8052 7.75437 50.8182 8.8297C50.8312 9.90503 51.0592 10.9669 51.4889 11.9527C51.9185 12.9386 52.5411 13.8285 53.32 14.57L72.78 34H8.06C5.92236 34 3.87226 34.8492 2.36072 36.3607C0.849176 37.8723 0 39.9224 0 42.06C0 44.1977 0.849176 46.2477 2.36072 47.7593C3.87226 49.2708 5.92236 50.12 8.06 50.12H72.6L53.32 69.43C51.8714 70.9542 51.0758 72.9842 51.103 75.0868C51.1302 77.1894 51.9781 79.1981 53.4656 80.6843C54.9531 82.1705 56.9626 83.0166 59.0652 83.0419C61.1678 83.0673 63.1971 82.2699 64.72 80.82L97.64 47.9C98.3911 47.1534 98.9864 46.2651 99.3915 45.2867C99.7967 44.3082 100.003 43.259 100 42.2C100.005 42.1334 100.005 42.0666 100 42C100.005 41.9334 100.005 41.8666 100 41.8C99.9993 39.6624 99.1505 37.6125 97.64 36.1Z" fill="black"/>
+      </svg>
+      
+
+    <script>
+      function rotatex() {
+        var innerArrow = document.getElementById("inner-arrow");
+        innerArrow.setAttribute("transform", "rotate(45)");
+    }
+    </script>
+
+    <script>
+
+        var map = L.map('map').setView([{{ drop_latt }}, {{ drop_long }}], 12);
+
+        var latlngs = [
+          [{{ drop_latt }}, {{ drop_long }}],
+          [{{ land_latt }}, {{ land_long }}],
+        ];
+
+        // This Line is Invisible -> only for getting a perfect zoom on the map
+        var polyline = L.polyline(latlngs, {color: 'red'})
+        map.fitBounds(polyline.getBounds());
+
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var greenIcon = new L.Icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+
+        var yellowIcon = new L.Icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+
+        var blueIcon = new L.Icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+
+        var landing_marker = L.marker([{{ land_latt }}, {{ land_long }}], {icon: yellowIcon}).addTo(map)
+
+        var drop_marker = L.marker([{{ drop_latt }}, {{ drop_long }}], {icon: greenIcon}).addTo(map)
+
+        var travel_marker;
+        let temp_line;
+
+        var lnn;
+
+        var drop_pos = [{{ drop_latt }}, {{ drop_long }}]
+
+        map.on('click', (event) => {
+
+          let lats = event.latlng.lat
+          let longs = event.latlng.lng
+             
+          current_pos = [lats, longs]  
+
+          if (travel_marker == null){
+
+            travel_marker = L.marker(current_pos, {icon: blueIcon}).addTo(map)
+            temp_line = L.polyline([drop_pos, current_pos] , {color: 'blue'}).addTo(map);
+            fetch(`/skydive_path?latitude=${lats}&longitude=${longs}`)
+
+          } 
+          else {
+
+            travel_marker = L.marker(current_pos, {icon: blueIcon}).addTo(map)
+
+            fetch(`/skydive_path?latitude=${lats}&longitude=${longs}`).then(response => response.json()).then(result => {
+              temp_line.addLatLng(current_pos);
+
+              console.log(result)
+              var innerArrow = document.getElementById("inner-arrow");
+
+              var rot = "rotate(" + String(-90 - result.angle) + ")" 
+
+              innerArrow.setAttribute("transform", rot);
+              prev_pos = [result.prev_latt, result.prev_long]         
+
+            })
+
+          }
+
+        })
+
+
+    </script>
+
+
+  <!-- Flowbite JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+  </body>
+</html>
